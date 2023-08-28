@@ -1,3 +1,20 @@
+#Basic function
 numpy
 pandas
+json
+os # for os.path
+
+#Image management (read,write,save)
+PIL
+matplotlib
+seaborn
+
+#Cloud
 google-cloud-storage
+
+#notebook
+jupyter
+
+#model
+scikit-learn
+tensorflow
