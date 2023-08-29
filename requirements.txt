@@ -3,7 +3,6 @@ numpy
 pandas
 
 #Image management (read,write,save)
-PIL
 matplotlib
 seaborn
 
