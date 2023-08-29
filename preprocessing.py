@@ -5,6 +5,9 @@ import logging
 import numpy as np
 import pandas as pd
 from PIL import Image, ImageDraw, ImageColor, ImageFont
+PATH_ANNO = os.environ.get('PATH_ANNO')
+PATH_IMAGE = os.environ.get('PATH_IMAGE')
+PATH_PROC_IMAGE = os.environ.get('PATH_PROC_IMAGE')
 
 def list_images_builder(directory): #Takes a directory and return the list of filename in the directory removing the suffix (.jpg)
     list_images=[]
@@ -16,7 +19,7 @@ def list_images_builder(directory): #Takes a directory and return the list of fi
     return list_images
 
 def load_annotation(image_key): #return all annotations for each panel
-    with open(os.path.join('data/annotations', '{:s}.json'.format(image_key)), 'r') as fid:
+    with open(os.path.join(PATH_ANNO, '{:s}.json'.format(image_key)), 'r') as fid:
         anno = json.load(fid)
     return anno
 
@@ -24,7 +27,7 @@ def crop_image(list_images): #retrieve annotation and add annotations to the ima
     count = 0
     for image in list_images:
         anno = load_annotation(image)
-        with Image.open(os.path.join('data/images', '{:s}.jpg'.format(image))) as img:
+        with Image.open(os.path.join(PATH_IMAGE, '{:s}.jpg'.format(image))) as img:
         #get coordinates linked to each panel
             for obj in anno['objects']:
                 x1 = obj['bbox']['xmin']
@@ -41,12 +44,15 @@ def crop_image(list_images): #retrieve annotation and add annotations to the ima
                 processed_img = cropped_image.resize(resizing_format)
                 #save images in processed_images folder with counting
                 if obj['label']!='other-sign':
-                    processed_img.save(f"data/processed_images/{obj['key']}.png")
+                    processed_img.save(f"{PATH_PROC_IMAGE}{obj['key']}.png")
+
                     count+=1
     return count #return the image img and the bbox (coordinates of the road signs)
 
 def building_dataframe(list_images):
     complet_list = []
+    if '.DS_Store' in list_images:
+        list_images.remove('.DS_Store')
     for image in list_images:
         # Getting json file name from directory
         anno = load_annotation(image)
@@ -58,9 +64,9 @@ def building_dataframe(list_images):
     df=pd.DataFrame.from_dict(complet_list)
     return df
 
-
 if __name__ == '__main__':
     #define a list of all images
-    list_images = list_images_builder('data/images')
+    list_images = list_images_builder(PATH_IMAGE)
+
     # create a list of processed images
     building_dataframe(list_images)
