@@ -1,6 +1,11 @@
 import json
 import os
+import traceback
+import logging
+import numpy as np
 from PIL import Image, ImageDraw, ImageColor, ImageFont
+
+
 
 def list_images_builder(directory): #Takes a directory and return the list of filename in the directory removing the suffix (.jpg)
     list_images=[]
