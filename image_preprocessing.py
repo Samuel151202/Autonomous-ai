@@ -19,8 +19,9 @@ def X_train_builder(directory='autonomous-ai/data/processed_images/'):
     dict_image_array = {}
     for img in list_images_builder_png(directory):
         image_train = Image.open(os.path.join(f'{directory}{img}.png'))
-        image_train_normalized = image_train / 255.
-        dict_image_array[img] = np.array(image_train_normalized)
+        image_train_array = np.array(image_train)
+        image_train_array_normalized = image_train_array / 255.
+        dict_image_array[img] = np.array(image_train_array_normalized)
     return dict_image_array
 
 if __name__ == '__main__':
