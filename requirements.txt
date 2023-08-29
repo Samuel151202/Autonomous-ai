@@ -1,8 +1,6 @@
 #Basic function
 numpy
 pandas
-json
-os # for os.path
 
 #Image management (read,write,save)
 PIL
