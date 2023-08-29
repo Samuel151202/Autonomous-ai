@@ -45,6 +45,7 @@ def crop_image(list_images): #retrieve annotation and add annotations to the ima
                 #save images in processed_images folder with counting
                 if obj['label']!='other-sign':
                     processed_img.save(f"{PATH_PROC_IMAGE}{obj['key']}.png")
+
                     count+=1
     return count #return the image img and the bbox (coordinates of the road signs)
 
@@ -52,7 +53,6 @@ def building_dataframe(list_images):
     complet_list = []
     if '.DS_Store' in list_images:
         list_images.remove('.DS_Store')
-
     for image in list_images:
         # Getting json file name from directory
         anno = load_annotation(image)
@@ -67,5 +67,6 @@ def building_dataframe(list_images):
 if __name__ == '__main__':
     #define a list of all images
     list_images = list_images_builder(PATH_IMAGE)
+
     # create a list of processed images
     building_dataframe(list_images)

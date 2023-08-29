@@ -1,3 +1,17 @@
+#Basic function
 numpy
 pandas
+
+#Image management (read,write,save)
+matplotlib
+seaborn
+
+#Cloud
 google-cloud-storage
+
+#notebook
+jupyter
+
+#model
+scikit-learn
+tensorflow

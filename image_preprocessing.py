@@ -17,6 +17,7 @@ def list_images_builder_png(directory=PATH_PROC_IMAGE): #Takes a directory and r
             list_images.append(filename.removesuffix('.png')) #don't include the suffix
     return list_images
 
+
 def X_train_builder(directory=PATH_PROC_IMAGE):
     dict_image_array = {}
     for img in list_images_builder_png(directory):
