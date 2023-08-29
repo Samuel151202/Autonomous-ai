@@ -63,4 +63,4 @@ if __name__ == '__main__':
     #define a list of all images
     list_images = list_images_builder('data/images')
     # create a list of processed images
-    crop_image(list_images[:10])
+    building_dataframe(list_images)
