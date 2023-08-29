@@ -4,6 +4,7 @@ import traceback
 import logging
 import numpy as np
 from PIL import Image, ImageDraw, ImageColor, ImageFont
+
 def list_images_builder(directory): #Takes a directory and return the list of filename in the directory removing the suffix (.jpg)
     list_images=[]
     for filename in os.listdir(directory):
@@ -12,10 +13,12 @@ def list_images_builder(directory): #Takes a directory and return the list of fi
         if os.path.isfile(f):
             list_images.append(filename.removesuffix('.jpg')) #don't include the suffix
     return list_images
+  
 def load_annotation(image_key): #return all annotations for each panel
     with open(os.path.join('autonomous-ai/data/annotations', '{:s}.json'.format(image_key)), 'r') as fid:
         anno = json.load(fid)
     return anno
+  
 def crop_image(list_images): #retrieve annotation and add annotations to the image
     count = 0
     for image in list_images:
@@ -40,6 +43,7 @@ def crop_image(list_images): #retrieve annotation and add annotations to the ima
                     processed_img.save(f"autonomous-ai/data/processed_images/{obj['key']}.png")
                     count+=1
     return count #return the image img and the bbox (coordinates of the road signs)
+  
 if __name__ == '__main__':
     #define a list of all images
     list_images = list_images_builder('autonomous-ai/data/images')
