@@ -1,11 +1,9 @@
 #Basic function
 numpy
 pandas
-json
-os # for os.path
+ipdb # Debug Python
 
 #Image management (read,write,save)
-PIL
 matplotlib
 seaborn
 
