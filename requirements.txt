@@ -1,7 +1,6 @@
 #Basic function
 numpy
 pandas
-ipdb # Debug Python
 
 #Image management (read,write,save)
 matplotlib
