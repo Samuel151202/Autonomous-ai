@@ -44,7 +44,7 @@ def crop_image(list_images): #retrieve annotation and add annotations to the ima
                 processed_img = cropped_image.resize(resizing_format)
                 #save images in processed_images folder with counting
                 if obj['label']!='other-sign':
-                    processed_img.save(f"{PATH_PROC_IMAGE}{obj['key']}.png")
+                    processed_img.save(f"{PATH_PROC_IMAGE}/{obj['key']}.png")
 
                     count+=1
     return count #return the image img and the bbox (coordinates of the road signs)
@@ -68,5 +68,8 @@ if __name__ == '__main__':
     #define a list of all images
     list_images = list_images_builder(PATH_IMAGE)
 
-    # create a list of processed images
+    # generate cropped images
+    crop_image(list_images)
+
+    # create a dataframe of processed images
     building_dataframe(list_images)
