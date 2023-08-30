@@ -33,4 +33,4 @@ def X_train_builder(directory=PATH_PROC_IMAGE):
     return dict_image_array
 
 if __name__ == '__main__':
-    print(X_train_builder())
+    X_train_builder()
