@@ -39,4 +39,4 @@ def fit_model(model,X,y):
 #def evaluate_model(model,X_test, y_test):
     '''la fonction retourne les resultats
     de prediction sur les données "test"'''
-    return model.evaluate(X_test, y_test)
+    #return model.evaluate(X_test, y_test)
