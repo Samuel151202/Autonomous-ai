@@ -44,7 +44,7 @@ def crop_image(list_images): #retrieve annotation and add annotations to the ima
                 processed_img = cropped_image.resize(resizing_format)
                 #save images in processed_images folder with counting
                 if obj['label']!='other-sign':
-                    processed_img.save(f"{PATH_PROC_IMAGE}/{obj['key']}.png")
+                    processed_img.save(f"{PATH_PROC_IMAGE}/{obj['label']}.png")
 
                     count+=1
     return count #return the image img and the bbox (coordinates of the road signs)
@@ -65,16 +65,14 @@ def building_dataframe(list_images, num_limit):
                 complet_list.append(dict_compl)
     # Do the DataFrame
     df=pd.DataFrame.from_dict(complet_list)
-    df_filter=df.groupby("label").filter(lambda x: len(x) > num_limit)
-
-    return df_filter
+    return df['label'].value_counts()[df['label'].value_counts()>num_limit].index.tolist()
 
 if __name__ == '__main__':
     #define a list of all images
     list_images = list_images_builder(PATH_IMAGE)
 
     # generate cropped images
-    crop_image(list_images)
+    crop_image(list_images[0:1000])
 
     # create a dataframe of processed images
-    print(building_dataframe(list_images, 200))
+    #print(building_dataframe(list_images, 1000))
