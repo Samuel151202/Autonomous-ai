@@ -78,7 +78,7 @@ def getting_data(dict_image_array,list_frequent_labels): #dico is the dict retur
     for i in range(len(y)):
         if y[i] in list_frequent_labels:
             y_list.append(y[i])
-            X_list.append(X)
+            X_list.append(X[i])
     return [X_list,y_list] #Returns X_list np.array for model and y_list label for encoding before model
 
 
