@@ -4,6 +4,7 @@ from PIL import Image, ImageDraw, ImageColor, ImageFont, ImageOps
 import numpy as np
 import os
 import pandas as pd
+import cv2
 PATH_ANNO = os.environ.get('PATH_ANNO')
 PATH_IMAGE = os.environ.get('PATH_IMAGE')
 PATH_PROC_IMAGE = os.environ.get('PATH_PROC_IMAGE')
@@ -18,10 +19,10 @@ def list_images_builder_png(directory=PATH_PROC_IMAGE): #Takes a directory and r
     return list_images
 
 def grayscale_n_array_converter(image_train):
-    image_train = ImageOps.grayscale(image_train) #converting to grayscale, option 2 image_file = image_file.convert('L') # convert image to black and white
     image_file_array = np.array(image_train) #converting to an array (244, 244)
-    image_file_array_reshaped = np.expand_dims(image_file_array, axis = -1) #forcing the shape (244, 244, 1)
-    return image_file_array_reshaped
+    grayscaled_image = cv2.cvtColor(image_file_array, cv2.COLOR_BGR2GRAY)
+    grayscaled_image_reshaped = np.expand_dims(grayscaled_image, axis = -1) #forcing the shape (244, 244, 1)
+    return grayscaled_image_reshaped
 
 def X_train_builder(directory=PATH_PROC_IMAGE):
     dict_image_array = {}
