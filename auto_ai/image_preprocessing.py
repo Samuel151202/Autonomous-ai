@@ -30,7 +30,7 @@ def X_train_builder(directory=PATH_PROC_IMAGE):
         image_bw_array = grayscale_n_array_converter(image_train) #converts it to b&w using function below
         normalized_image_bw_array = image_bw_array / 255. #normalizes the image
         dict_image_array[img] = np.array(normalized_image_bw_array) #add to the dictionary
-    return dict_image_array
+    return dict_image_array # On a les y en keys et les y en values
 
 if __name__ == '__main__':
     X_train_builder()
