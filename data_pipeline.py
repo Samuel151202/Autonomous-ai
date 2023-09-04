@@ -56,12 +56,13 @@ def load_img(path):
 
 def load_img_256(path):
     img = cv2.imread(path)
-
+    dimensions = img.shape
     dim = CFG.DIM
 
     img = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
     img = tf.image.rgb_to_grayscale(img)
-    return tf.cast(img, tf.float32)
+    img = tf.cast(img, tf.float32)
+    return img, dimensions
 
 
 # Load Annotations
@@ -101,8 +102,18 @@ def load_data(path):
     image_path = os.path.join("raw_data", "images", f"{filename}.jpg")
     annotation_path = os.path.join("raw_data", "annotations", f"{filename}.json")
 
-    images = load_img_256(image_path)
+    images, dims = load_img_256(image_path)
     labels, bboxs = load_annotation(annotation_path)
+
+    ratio_X = CFG.DIM[0] / dims[1]
+    ratio_Y = CFG.DIM[1] / dims[0]
+    xmin = int(bboxs[0][0] * ratio_X)
+    ymin = int(bboxs[0][1] * ratio_Y)
+    xmax = int(bboxs[0][2] * ratio_X)
+    ymax = int(bboxs[0][3] * ratio_Y)
+
+    bboxs = (xmin, ymin, xmax, ymax)
+    bboxs = tf.constant(bboxs, dtype=tf.int64)
 
     return images, labels, bboxs
 
@@ -122,7 +133,7 @@ def build_dataset(path):
         tf.data.Dataset.list_files(path)
         .shuffle(nb_data, reshuffle_each_iteration=False)
         .map(mappable_func)
-        .batch(CFG.BATCH_SIZE)
+        .batch(CFG.BATCH_SIZE, drop_remainder= True)
         .prefetch(CFG.AUTOTUNE)
     )
 
