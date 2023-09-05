@@ -5,7 +5,7 @@ import logging
 import numpy as np
 import pandas as pd
 from PIL import Image, ImageDraw, ImageColor, ImageFont
-from image_preprocessing import X_train_builder
+from auto_ai.image_preprocessing import X_train_builder
 PATH_ANNO = os.environ.get('PATH_ANNO')
 PATH_IMAGE = os.environ.get('PATH_IMAGE')
 PATH_PROC_IMAGE = os.environ.get('PATH_PROC_IMAGE')
@@ -38,7 +38,7 @@ def crop_image(list_images): #retrieve annotation and add annotations to the ima
         #image processing + standardization
                 try:
                     cropped_image = img.crop((x1, y1, x2, y2))
-                    resizing_format = (244,244)
+                    resizing_format = (64,64)
                     processed_img = cropped_image.resize(resizing_format)
                 except Exception as e :
                     logging.error(traceback.format_exc()) # Logs the error appropriately
