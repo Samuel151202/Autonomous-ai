@@ -96,23 +96,26 @@ def findSigns(image, contours, threshold=0.6, distance_theshold=0.15):
             top, left = np.amin(coordinate, axis=0)
             right, bottom = np.amax(coordinate, axis = 0)
             coordinates.append([(top-2,left-2),(right+1,bottom+1)])
-    #print(coordinates)
     return signs, coordinates
 
 ### Final function to get list of signs, and a list of their coordinates
 
-def panel_detector(path='/data/test_images/French-Road-Signs.jpg'):
+def panel_detector(path='data/test_images/French-Road-Signs.jpg'):
     image = cv2.imread(path) #that includes the conversion
     processed_image = preprocess_image(image)
     processed_image_ = removeSmallComponents(processed_image, threshold=300)
     contours = findContour(processed_image_)
     signs, coordinates = findSigns(image, contours, threshold=0.6, distance_theshold=0.15)
-    return signs, coordinates
+    return signs,coordinates,path
 
 #Test the function and see image with signs highlighted
-"""signs, coordinates = panel_detector()
-image = cv2.imread('/Users/chrisphung/Desktop/Bh36Ed4HBJatMpSNnFTgTw.jpg')
-for coordinate in coordinates:
-    image = cv2.rectangle(image,coordinate[0],coordinate[1],(0,255,0),3) #coordinate[0] #x1y1 #coordinate[1] #x2y2
-plt.imshow(image)
-plt.show()"""
+
+if __name__ == '__main__':
+    filename='/home/parfait/code/Samuel151202/Autonomous-ai/data/images/u9lg1aqXm_UmrTn6eK4H_w.jpg'
+    signs, coordinates,filename= panel_detector(filename)
+    image = cv2.imread(filename)
+    for coordinate in coordinates:
+        image = cv2.rectangle(image,coordinate[0],coordinate[1],(0,255,0),3) #coordinate[0] #x1y1 #coordinate[1] #x2y2
+        image = cv2.putText(image, 'steingate', (coordinate[0][0], coordinate[0][1] - 5),cv2.FONT_HERSHEY_SIMPLEX, 0.6, color=1, thickness=2)
+    plt.imshow(image)
+    plt.show()
