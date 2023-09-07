@@ -38,7 +38,7 @@ def full_preproc(X_list,coordinates,seuil=0.7,liste_label=LISTE_LABEL):
         prob_list,class_list,coordinates=predict(X_test,coordinates,seuil)
         for i in class_list:
             label_list.append(sorted_list[i])
-        return label_list,coordinates
+        return label_list,coordinates,prob_list
 
 def test_builder(filename):
     signs,coordinates,img_full=panel_detector(filename)
@@ -61,18 +61,37 @@ def test_builder(filename):
 
 def demo(filename):
     X_list,coordinates= test_builder(filename)
-    label_list,coordinates=full_preproc(X_list,coordinates,seuil=0.7,liste_label=LISTE_LABEL)
+    label_list,coordinates,prob_list=full_preproc(X_list,coordinates,seuil=0.95,liste_label=LISTE_LABEL)
+    prob_list = [round(float(prob),2)*100 for prob in prob_list] #convert from np.float to float to be able to round
+    for i in range(len(label_list)):
+        label_list[i] = label_list[i].split("--")
+        label_list[i] = f"{label_list[i][0]}-{label_list[i][1]}"
+
     image = cv2.imread(filename)
+
     for i in range(len(coordinates)):
         image = cv2.rectangle(image,coordinates[i][0],coordinates[i][1],(0,255,0),3) #coordinate[0] #x1y1 #coordinate[1] #x2y2
-        image = cv2.putText(image,label_list[i], (coordinates[i][0][0], coordinates[i][0][1] - 5),cv2.FONT_HERSHEY_SIMPLEX, 0.6, color=0, thickness=2)
+        image = cv2.putText(img=image, #add the class
+                            text=f"{label_list[i]}",
+                            org=(coordinates[i][0][0], coordinates[i][0][1] - 100),
+                            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                            fontScale=2,
+                            color=(0,255,0),
+                            thickness=4)
+        image = cv2.putText(img=image, #add the probability chance
+                    text=f"{prob_list[i]}%",
+                    org=(coordinates[i][0][0], coordinates[i][0][1] - 30),
+                    fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                    fontScale=2,
+                    color=(00,255,0),
+                    thickness=5)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     plt.imshow(image)
     plt.show()
 
 
-
 if __name__ == '__main__':
-    filename='/home/parfait/code/Samuel151202/Autonomous-ai/data/test_images/Panneau-Stops.jpg'
+    filename='/Users/chrisphung/code/Samuel151202/Autonomous-ai/data/images/B0ZaDY9Bo6x69HLxshWEDg.jpg'
     # X_list=test_builder(filename)
     # liste=full_preproc(X_list,0.7)
     # print(liste)
