@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from math import sqrt
 
 ### Preprocess image
@@ -100,7 +100,8 @@ def findSigns(image, contours, threshold=0.6, distance_theshold=0.15):
 
 ### Final function to get list of signs, and a list of their coordinates
 
-def panel_detector(path='data/test_images/French-Road-Signs.jpg'):
+def panel_detector(path):
+    print(path)
     image = cv2.imread(path) #that includes the conversion
     processed_image = preprocess_image(image)
     processed_image_ = removeSmallComponents(processed_image, threshold=300)
@@ -110,12 +111,12 @@ def panel_detector(path='data/test_images/French-Road-Signs.jpg'):
 
 #Test the function and see image with signs highlighted
 
-if __name__ == '__main__':
-    filename='/home/parfait/code/Samuel151202/Autonomous-ai/data/images/u9lg1aqXm_UmrTn6eK4H_w.jpg'
-    signs, coordinates,filename= panel_detector(filename)
-    image = cv2.imread(filename)
-    for coordinate in coordinates:
-        image = cv2.rectangle(image,coordinate[0],coordinate[1],(0,255,0),3) #coordinate[0] #x1y1 #coordinate[1] #x2y2
-        image = cv2.putText(image, 'steingate', (coordinate[0][0], coordinate[0][1] - 5),cv2.FONT_HERSHEY_SIMPLEX, 0.6, color=1, thickness=2)
-    plt.imshow(image)
-    plt.show()
+# if __name__ == '__main__':
+#     filename='/home/parfait/code/Samuel151202/Autonomous-ai/data/images/u9lg1aqXm_UmrTn6eK4H_w.jpg'
+#     signs, coordinates,filename= panel_detector(filename)
+#     image = cv2.imread(filename)
+#     for coordinate in coordinates:
+#         image = cv2.rectangle(image,coordinate[0],coordinate[1],(0,255,0),3) #coordinate[0] #x1y1 #coordinate[1] #x2y2
+#         image = cv2.putText(image, 'steingate', (coordinate[0][0], coordinate[0][1] - 5),cv2.FONT_HERSHEY_SIMPLEX, 0.6, color=1, thickness=2)
+#     plt.imshow(image)
+#     plt.show()

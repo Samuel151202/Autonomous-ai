@@ -2,10 +2,11 @@ import json
 import os
 import traceback
 import logging
-import numpy as np
 import pandas as pd
-from PIL import Image, ImageDraw, ImageColor, ImageFont
-from image_preprocessing import X_train_builder
+from PIL import Image
+from auto_ai.image_preprocessing import X_train_builder
+
+
 PATH_ANNO = os.environ.get('PATH_ANNO')
 PATH_IMAGE = os.environ.get('PATH_IMAGE')
 PATH_PROC_IMAGE = os.environ.get('PATH_PROC_IMAGE')
@@ -23,6 +24,11 @@ def load_annotation(image_key): #return all annotations for each panel
     with open(os.path.join(PATH_ANNO, '{:s}.json'.format(image_key)), 'r') as fid:
         anno = json.load(fid)
     return anno
+
+def resizer(image):
+    resizing_format = (64,64)
+    img = image.resize(resizing_format)
+    return img
 
 def crop_image(list_images): #retrieve annotation and add annotations to the image
     count = 0
