@@ -3,7 +3,7 @@ import os
 import csv
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response,JSONResponse
 from io import BytesIO
 from auto_ai.object_detector import *
 from auto_ai.demo import *
@@ -72,12 +72,34 @@ async def predict_api(file: UploadFile = File(...)):
         print(file.filename)
         path=f'/opt/build/auto_ai/{file.filename}'
         print(__file__)
-        prediction=demo(path)
+        prediction=demo_bluesky(path)
         print('✅ Prediction data acquired')
         img=Image.fromarray(prediction)
         path_img=f'/opt/build/auto_ai/test.jpeg'
         img.save(path_img)
         return FileResponse(path_img,media_type='image/jpeg')
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/predict/labels")
+async def predict_api(file: UploadFile = File(...)):
+    extension = file.filename.split(".")[-1] in ("jpg", "jpeg", "png")
+    if not extension:
+        raise HTTPException(status_code=400, detail="Wrong extension")
+    if file is None:
+        raise HTTPException(status_code=400, detail="No file uploaded")
+    try:
+        # Save the uploaded file to a temporary location
+        with open(f'/opt/build/auto_ai/{file.filename}', 'wb') as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        print(file.filename)
+        path=f'/opt/build/auto_ai/{file.filename}'
+        print(__file__)
+        pred_label=demo_final_deploy(path)
+        print('✅ Prediction data acquired')
+        #return json.dumps(pred_label)
+        return Response(content=pred_label[0]), Response(content=pred_label[1]),\
+            Response(content=pred_label[2])
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
